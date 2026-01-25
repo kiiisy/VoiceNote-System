@@ -30,7 +30,6 @@ VoiceNote-System/
 
 ## ドキュメント
 
-- 📘 システム設計書
-  - docs/system_design.md
+- 📘 [システム設計書](docs/system_design.md)
 
 各サブモジュールの詳細については、それぞれのリポジトリを参照すること。
