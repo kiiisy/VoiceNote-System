@@ -81,7 +81,7 @@ PS / PLの詳細設計については、以下のドキュメントを参照す�
 | I2S | 音声用シリアルインターフェース |
 | Audio Formatter | 音声用DMA IP |
 | AGC | Automatic Gain Control |
-| dToF | depth Time of Flight 距離センサ |
+| dToF | depth Time of Flight 測距センサ |
 | LVGL | 組み込み向けGUIライブラリ |
 
 ---
@@ -94,18 +94,66 @@ PS / PLの詳細設計については、以下のドキュメントを参照す�
 そのため実動作としては使用しない予定。
 
 ### 5-1. 構成要素
-- **SoM**:
-  - Zybo Z7-10
-- **搭載SoC**：
-  - AMD Zynq-7000
-    - PS : ARM Coretex-A9（Dual Core）
-    - PL : Artix-7
-- **搭載ペリフェラル（本システムで使用するもの）**：
-  - Codec（ADC/DAC） : SSM2603
-- **外部機器**：
-  - 距離センサ : TF-Luna（dToFセンサ）
-  - LCD : ST7789
-  - Touch Controller : CST328
+
+#### SoM / SoC
+
+| 項目 | 内容 |
+|---|---|
+| SoM | Zybo Z7-10 |
+| SoC | AMD Zynq-7000 |
+| PS | Arm Cortex-A9（Dual Core） |
+| PL | Artix-7 |
+
+#### Codec（ADC / DAC）
+
+| 項目 | 内容 |
+|---|---|
+| デバイス | SSM2603 |
+| インターフェース | I2S（音声） / I2C（制御） |
+| チャンネル数 | 2ch |
+| 量子化ビット数 | 16bit |
+| サンプリングレート | 48kHz（本システム設定） |
+| 入力 | マイク入力 |
+| 出力 | ヘッドフォン出力 |
+
+#### dToFセンサ
+
+| 項目 | 内容 |
+|---|---|
+| デバイス | TF-Luna |
+| センサ種別 | dToF（depth Time of Flight） |
+| インターフェース | UART |
+| 測距範囲 | 200mm ～ 3000mm |
+| 動作周波数 | 100Hz |
+
+#### LCD / タッチパネル
+
+**LCD**
+
+| 項目 | 内容 |
+|---|---|
+| デバイス | ST7789 |
+| 解像度 | 240 × 320 |
+| インターフェース | SPI |
+| 表示色 | RGB565 |
+
+**タッチコントローラ**
+
+| 項目 | 内容 |
+|---|---|
+| デバイス | CST328 |
+| インターフェース | I2C |
+| タッチ方式 | 静電容量方式 |
+
+#### SDカード（micro）
+
+| 項目 | 内容 |
+|---|---|
+| 対応規格 | SD / SDHC |
+| スピードクラス | 4以上を推奨 |
+| ファイルシステム | FAT32 |
+| インターフェース | SDIO / SPI |
+| 想定容量 | 数GB～32GB程度 |
 
 ---
 
