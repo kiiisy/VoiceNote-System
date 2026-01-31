@@ -34,7 +34,7 @@ PS / PLの詳細設計については、以下のドキュメントを参照す�
 | 最小録音単位 | 数十ms程度 |
 | 再生方式 | ストリーム再生 / SD再生 |
 | 録音開始方式 | 手動 / 自動（音声レベル判定） |
-| 再生音量制御 | 距離連動 |
+| 再生音量制御 | 測距連動 |
 | 音声ファイル形式 | WAV |
 
 ### 3-2. 音声性能
@@ -79,7 +79,7 @@ PS / PLの詳細設計については、以下のドキュメントを参照す�
 | PS / PL | Zynq SoCにおける論理的な構成区分 |
 | FPGA / SW | 実装手段を示す用語（設計上の区分は PS / PL を優先する） |
 | I2S | 音声用シリアルインターフェース |
-| Audio Formatter | 音声用DMA IP |
+| ARC | Automatic Recording Control |
 | AGC | Automatic Gain Control |
 | LVGL | 組み込み向けGUIライブラリ |
 
@@ -152,7 +152,7 @@ PS / PLの詳細設計については、以下のドキュメントを参照す�
 | スピードクラス | 4以上を推奨 |
 | ファイルシステム | FAT32 |
 | インターフェース | SDIO / SPI |
-| 想定容量 | 最大4GB |
+| 想定容量 | 数十GB ～ 32GB程度 |
 
 ---
 
@@ -282,7 +282,8 @@ sequenceDiagram
 
     GUI->>PS: 「録音開始」操作
     PS->>PL: 録音開始
-    Mic->>PL: 音声入力（I2S）
+    PL->>Mic: 音声入力開始
+    Mic->>PL: 音声データ入力（I2S）
     PL->>DDR: 音声ストリームを書き込み（DMA転送）
     PS->>DDR: バッファを読み出し
     PS->>SD: 音声データを保存
@@ -315,8 +316,9 @@ sequenceDiagram
     PS->>SD: 音声データを読み出し
     PS->>DDR: 再生バッファへ展開
     PS->>PL: 再生開始
+    PL->>Spk: 音声出力開始
     DDR->>PL: 音声ストリームを読み出し（DMA転送）
-    PL->>Spk: 音声出力（I2S）
+    PL->>Spk: 音声データ出力（I2S）
 
     GUI->>PS: 「再生停止」操作
     PS->>PL: 再生停止
@@ -349,12 +351,14 @@ sequenceDiagram
 
     GUI->>PS: 「録音開始」操作（DDR保持）
     PS->>PL: 録音開始
-    Mic->>PL: 音声入力（I2S）
+    PL->>Mic: 音声入力開始
+    Mic->>PL: 音声データ入力（I2S）
     PL->>DDR: 音声ストリームを書き込み（DMA転送）
     PS->>DDR: 録音バッファ管理
 
     GUI->>PS: 「再生開始」操作（DDRから再生）
     PS->>PL: 再生開始
+    PL->>Spk: 音声再生開始
     DDR->>PL: 音声ストリームを読み出し（DMA転送）
     PL->>Spk: 音声出力（I2S）
 
