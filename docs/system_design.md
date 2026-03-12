@@ -497,9 +497,3 @@ sequenceDiagram
   - Google Test
 
 ---
-
-# Lint Test
-This moduel recieve audio data.
-本システムにおいては、録音を行うことが可能である。
-## Next Section
-[存在しない設計書](docs/not_found_design.md)
