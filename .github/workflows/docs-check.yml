@@ -20,7 +20,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Run markdownlint with reviewdog
-        uses: reviewdog/action-markdownlint@v0
+        uses: reviewdog/action-markdownlint@v0.26.2
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           reporter: github-pr-review
@@ -46,24 +46,20 @@ jobs:
           npm install -g textlint
           npm install -g textlint-rule-preset-ja-technical-writing
 
-      - name: Run textlint
-        run: |
-          textlint --config .config/docs/textlintrc.json "**/*.md" > textlint-report.txt || true
-
-      - name: Report textlint with reviewdog
+      - name: Setup reviewdog
         uses: reviewdog/action-setup@v1
 
-      - name: Run reviewdog for textlint
+      - name: Run textlint with reviewdog
         env:
           REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          cat textlint-report.txt | reviewdog \
-            -f=textlint \
+          textlint -f checkstyle --config .config/docs/textlintrc.json "**/*.md" | \
+          reviewdog \
+            -f=checkstyle \
             -name="textlint" \
             -reporter=github-pr-review \
             -filter-mode=added \
-            -level=warning \
-            -fail-level=error
+            -level=warning
 
   cspell:
     name: cspell
