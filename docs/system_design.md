@@ -469,8 +469,8 @@ sequenceDiagram
 - 言語
   - Python 3.11
   - C / C++
-- 実行環境
-  - uv（化想環境）
+- パッケージ管理
+  - uv
 - ライブラリ
   - Jupyter Lab 4.4.10
 
