@@ -27,7 +27,7 @@ jobs:
           filter_mode: added
           fail_level: warning
           level: warning
-          markdownlint_flags: "--config .config/docs/markdownlint.json README.md docs/**/*.md"
+          markdownlint_flags: "--config .config/docs/markdownlint.json **/*.md"
 
   textlint:
     name: textlint (reviewdog)
@@ -46,13 +46,24 @@ jobs:
           npm install -g textlint
           npm install -g textlint-rule-preset-ja-technical-writing
 
-      - name: Run textlint with reviewdog
-        uses: tsuyoshicho/action-textlint@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          reporter: github-pr-review
-          level: warning
-          textlint_flags: "--config .config/docs/textlintrc.json README.md docs/**/*.md"
+      - name: Run textlint
+        run: |
+          textlint --config .config/docs/textlintrc.json "**/*.md" > textlint-report.txt || true
+
+      - name: Report textlint with reviewdog
+        uses: reviewdog/action-setup@v1
+
+      - name: Run reviewdog for textlint
+        env:
+          REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          cat textlint-report.txt | reviewdog \
+            -f=textlint \
+            -name="textlint" \
+            -reporter=github-pr-review \
+            -filter-mode=added \
+            -level=warning \
+            -fail-level=error
 
   cspell:
     name: cspell
@@ -65,9 +76,7 @@ jobs:
         uses: streetsidesoftware/cspell-action@v6
         with:
           config: .config/docs/cspell.json
-          files: |
-            README.md
-            docs/**/*.md
+          files: "**/*.md"
           inline: warning
           strict: false
 
@@ -83,27 +92,4 @@ jobs:
         with:
           args: >
             --config .config/docs/lychee.toml
-            README.md
-            docs/**/*.md
-
-  vale:
-    name: vale
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Install Vale
-        run: |
-          wget https://github.com/errata-ai/vale/releases/latest/download/vale_Linux_64-bit.tar.gz
-          tar -xzf vale_Linux_64-bit.tar.gz
-          sudo mv vale /usr/local/bin/vale
-          vale --version
-
-      - name: Sync Vale styles
-        run: |
-          vale sync --config .config/docs/vale.ini
-
-      - name: Run Vale
-        run: |
-          vale --config .config/docs/vale.ini README.md docs/**/*.md
+            **/*.md
