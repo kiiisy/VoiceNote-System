@@ -30,6 +30,36 @@ VoiceNote-System/
 
 ## ドキュメント
 
-- 📘 [システム設計書](docs/system_design.md)
+- 📘 [システム設計書](docs/システム設計書.md)
 
 各サブモジュールの詳細については、それぞれのリポジトリを参照すること。
+
+## Push / PR ルール
+
+GitHub Actionsを利用しているため、`main` へは直接pushせず、作業ブランチ経由でPull Requestを作成してください。
+
+### 基本ルール
+
+1. `main` から作業ブランチを作成する
+2. 作業ブランチに commit / push する
+3. Pull Request を作成する
+4. GitHub Actions が成功してからレビュー・マージする
+5. `main` への直接 push は行わない
+
+### 推奨手順
+
+```bash
+# main を最新化
+git checkout main
+git pull origin main
+
+# 作業ブランチ作成
+git checkout -b dev-tmp
+
+# 変更をコミット
+git add .
+git commit -m "chore: add push and PR workflow"
+
+# リモートへ push
+git push -u origin dev-tmp
+```
