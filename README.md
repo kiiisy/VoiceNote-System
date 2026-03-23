@@ -14,25 +14,29 @@ SoCならではのオーディオシステムを作っています。
 ## リポジトリ構成
 
 本リポジトリは、システム全体を統括する**親リポジトリ**として位置付ける。
-実装は用途ごとにサブモジュールとして分離して管理する。
+実装リポジトリは本リポジトリには含めず、リンクで参照して管理する。
 
 ```text
 VoiceNote-System/
-├── README.md                  : 本ファイル（プロジェクト概要）
-├── docs/
-│   └── system_design.md       : システム設計書
-├── VoiceNote-FPGA/            : FPGA実装
-├── VoiceNote-HLS/             : HLS実装
-├── VoiceNote-Ref-C/           : HLSのリファレンスC実装
-├── VoiceNote-Algo/            : アルゴリズム検討
-└── VoiceNote-SW/              : ソフトウェア実装
+├── README.md                 : 本ファイル（プロジェクト概要）
+└── docs/
+    ├── システム設計書.md      : システム設計書
+    └── img/                  : 設計書で利用する画像
 ```
+
+## 関連リポジトリ（リンク）
+
+- VoiceNote-FPGA: [ここをクリック](https://github.com/kiiisy/VoiceNote-FPGA.git)
+- VoiceNote-HLS: [ここをクリック](https://github.com/kiiisy/VoiceNote-HLS.git)
+- VoiceNote-Ref-C: [ここをクリック](https://github.com/kiiisy/VoiceNote-Ref-C.git)
+- VoiceNote-SW: [ここをクリック](https://github.com/kiiisy/VoiceNote-SW.git)
+- VoiceNote-Algo: [ここをクリック](https://github.com/kiiisy/VoiceNote-Algo.git)
 
 ## ドキュメント
 
 - 📘 [システム設計書](docs/システム設計書.md)
 
-各サブモジュールの詳細については、それぞれのリポジトリを参照すること。
+各実装の詳細については、上記の関連リポジトリを参照すること。
 
 ## Push / PR ルール
 
